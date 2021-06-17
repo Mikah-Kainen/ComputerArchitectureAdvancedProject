@@ -10,9 +10,9 @@ namespace SharedLibrary.Layouts
     {
         public Regex Pattern;
         public byte[] AssembledBytes;
-        public Tokens Token;
+        public byte Token;
 
-        public PatternBasedLayout(Tokens token, string[] captureGroups)
+        public PatternBasedLayout(byte token, string[] captureGroups)
         {
             Token = token;
 

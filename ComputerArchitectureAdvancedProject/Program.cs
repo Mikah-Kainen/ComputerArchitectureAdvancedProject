@@ -4,22 +4,71 @@ using SharedLibrary.Layouts;
 using SharedLibrary.Shortcuts;
 using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.Reflection;
+using System.Linq;
 
 namespace ComputerArchitectureAdvancedProject
 {
     class Program
     {
+        class Model
+        {
+            public string OpName { get; set; }
+            public string LayoutName { get; set; }
+            public string OpCode { get; set; }
+        }
+
         public static void InitializeCommands()
         {
-            ILayout ADDLayout = new MathLayout(Tokens.ADD);
-            ILayout SUBLayout = new MathLayout(Tokens.SUB);
-            ILayout MULTLayout = new MathLayout(Tokens.MULT);
-            ILayout DIVLayout = new MathLayout(Tokens.DIV);
-            ILayout MODLayout = new MathLayout(Tokens.MOD);
-            ILayout EQLayout = new MathLayout(Tokens.EQ);
+            //Model addModel = new Model() { EnumName = "ADD", LayoutName = "MathLayout", OpCode = 0x1 };
+            //string serializedData = JsonConvert.SerializeObject(addModel);
+            //System.IO.File.WriteAllText(filePath, serializedData);
+            string filePath = "Test.json";
 
-            ILayout SETLayout = new MemoryLayout(Tokens.SET);
-            ILayout LOADLayout = new MemoryLayout(Tokens.LOAD);
+            
+            Model[] returnedModels = JsonConvert.DeserializeObject<Model[]>(System.IO.File.ReadAllText(filePath));
+
+            Type[] allTypes = Assembly.GetAssembly(typeof(ILayout)).GetTypes();
+            Type[] allILayoutTypes = allTypes.Where(new Func<Type, bool>((type) =>
+            {
+                var interfaces = type.GetInterfaces();
+                foreach(var @interface in interfaces)
+                { 
+                    if(@interface == typeof(ILayout))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            })).ToArray();
+
+            //Type[] allLayoutTypes = allTypes.Where(x => x.GetInterface("ILayout") != null).ToArray();
+
+            foreach (Model returnedModel in returnedModels)
+            {
+                foreach (Type type in allILayoutTypes)
+                {
+                    if (type.Name == returnedModel.LayoutName)
+                    {
+                        var @byte = byte.Parse(returnedModel.OpCode, System.Globalization.NumberStyles.HexNumber);
+                        Activator.CreateInstance(type, @byte);
+
+                        Dictionaries.StringToOp.Add($"{returnedModel.OpName}", @byte);
+                        Dictionaries.OpToString.Add(@byte, $"{returnedModel.OpName}");
+                    }
+                }
+            }
+
+            //ILayout ADDLayout = new MathLayout(Tokens.ADD);
+            //ILayout SUBLayout = new MathLayout(Tokens.SUB);
+            //ILayout MULTLayout = new MathLayout(Tokens.MULT);
+            //ILayout DIVLayout = new MathLayout(Tokens.DIV);
+            //ILayout MODLayout = new MathLayout(Tokens.MOD);
+            //ILayout EQLayout = new MathLayout(Tokens.EQ);
+
+            //ILayout SETLayout = new MemoryLayout(Tokens.SET);
+            //ILayout LOADLayout = new MemoryLayout(Tokens.LOAD);
         }
 
         static void Main(string[] args)

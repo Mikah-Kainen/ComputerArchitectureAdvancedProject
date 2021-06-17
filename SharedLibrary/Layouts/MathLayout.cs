@@ -15,7 +15,7 @@ namespace SharedLibrary.Layouts
             RegexShortcuts.Register,
             RegexShortcuts.Register,
         };
-        public MathLayout(Tokens token)
+        public MathLayout(byte token)
             : base(token, CaptureGroups)
         {
 
@@ -40,7 +40,7 @@ namespace SharedLibrary.Layouts
 
         public string Parse(byte[] input)
         {
-            string returnString = Dictionaries.TokenToString[Token];
+            string returnString = Dictionaries.OpToString[Token];
 
             for (int i = 1; i < input.Length; i++)
             {

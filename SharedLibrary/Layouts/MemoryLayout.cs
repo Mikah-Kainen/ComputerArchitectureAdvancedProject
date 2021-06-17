@@ -14,7 +14,7 @@ namespace SharedLibrary.Layouts
             RegexShortcuts.MemoryAddress
         };
 
-        public MemoryLayout(Tokens token)
+        public MemoryLayout(byte token)
             : base(token, CaptureGroups)
         {
             Dictionaries.GetLayoutFromToken.Add(token, this);
@@ -37,7 +37,7 @@ namespace SharedLibrary.Layouts
 
         public string Parse(byte[] input)
         {
-            string returnString = Dictionaries.TokenToString[Token];
+            string returnString = Dictionaries.OpToString[Token];
 
             returnString += " R";
             returnString += input[1];

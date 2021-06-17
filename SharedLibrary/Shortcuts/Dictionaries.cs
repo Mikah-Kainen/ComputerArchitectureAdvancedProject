@@ -24,11 +24,13 @@ namespace SharedLibrary.Shortcuts
         //    //[Tokens.STR]
         //};
 
-        public static Dictionary<Tokens, ILayout> GetLayoutFromToken = new Dictionary<Tokens, ILayout>()
+        public static Dictionary<byte, ILayout> GetLayoutFromToken = new Dictionary<byte, ILayout>()
         {
 
         };
 
-        public static Dictionary<Tokens, string> TokenToString = new Dictionary<Tokens, string>();
+        public static Dictionary<byte, string> OpToString = new Dictionary<byte, string>();
+
+        public static Dictionary<string, byte> StringToOp = new Dictionary<string, byte>();
     }
 }
