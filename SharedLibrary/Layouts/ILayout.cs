@@ -8,5 +8,6 @@ namespace SharedLibrary.Layouts
     public interface ILayout
     {
         byte[] Parse(string input);
+        string Parse(byte[] input);
     }
 }

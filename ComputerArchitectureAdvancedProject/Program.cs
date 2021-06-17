@@ -9,7 +9,7 @@ namespace ComputerArchitectureAdvancedProject
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void InitializeCommands()
         {
             ILayout ADDLayout = new MathLayout(Tokens.ADD);
             ILayout SUBLayout = new MathLayout(Tokens.SUB);
@@ -18,9 +18,19 @@ namespace ComputerArchitectureAdvancedProject
             ILayout MODLayout = new MathLayout(Tokens.MOD);
             ILayout EQLayout = new MathLayout(Tokens.EQ);
 
+            ILayout SETLayout = new MemoryLayout(Tokens.SET);
+            ILayout LOADLayout = new MemoryLayout(Tokens.LOAD);
+        }
+
+        static void Main(string[] args)
+        {
+
+            InitializeCommands();
+
+
             string[] commands =
-{
-                "ADD R01 R02 R31",
+            {
+                "SET R01 0x0023",
                 "Sub R23 R12 R20 ;haha I will trick the compiler with comments",
                 "MUlT R12 R0 R21",
                 "div R23 R31 R21",
@@ -32,7 +42,7 @@ namespace ComputerArchitectureAdvancedProject
 
             byte[][] expected =
             {
-                new byte[4]{ 1, 1, 2, 31},
+                new byte[4]{ 0x21, 1, 00, 23},
                 new byte[4]{ 2, 23, 12, 20},
                 new byte[4]{ 3, 12, 0, 21},
                 new byte[4]{ 4, 23, 31, 21},
@@ -58,7 +68,30 @@ namespace ComputerArchitectureAdvancedProject
                 }
             }
 
+            bool areEqual2 = true;
+            var result2 = Parser.Parse(result);
+
+            string[] expected2 =
+            {
+                "SET R1 0x023",
+                "SUB R23 R12 R20",
+                "MULT R12 R0 R21",
+                "DIV R23 R31 R21",
+                "MOD R23 R12 R30",
+                "EQ R1 R1 R1",
+                "ADD R2 R3 R4",
+                "ADD R4 R3 R2",
+            };
+
+            for(int i = 0; i < result2.Length; i ++)
+            {
+                if(result2[i] != expected2[i])
+                {
+                    areEqual2 = false;
+                }
+            }
         }
+   
     }
     
 }

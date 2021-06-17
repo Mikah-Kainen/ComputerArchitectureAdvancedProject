@@ -1,25 +1,23 @@
-﻿using SharedLibrary.Layouts;
-using SharedLibrary.Shortcuts;
+﻿using SharedLibrary.Shortcuts;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace SharedLibrary.Layouts
 {
-    public class MathLayout : PatternBasedLayout, ILayout
+    public class MemoryLayout : PatternBasedLayout, ILayout
     {
-        public static string[] CaptureGroups = new string[]
+        public static string[] CaptureGroups =
         {
             RegexShortcuts.Register,
-            RegexShortcuts.Register,
-            RegexShortcuts.Register,
+            RegexShortcuts.MemoryAddress
         };
-        public MathLayout(Tokens token)
+
+        public MemoryLayout(Tokens token)
             : base(token, CaptureGroups)
         {
-
-              Dictionaries.GetLayoutFromToken.Add(token, this);
+            Dictionaries.GetLayoutFromToken.Add(token, this);
         }
 
         public byte[] Parse(string input)
@@ -30,10 +28,9 @@ namespace SharedLibrary.Layouts
                 throw new SystemException("IDK WHAT THIS COMMAND IS");
             }
 
-            for (int i = 1; i < AssembledBytes.Length; i++)
-            {
-                AssembledBytes[i] = byte.Parse(parse[i]);
-            }
+            AssembledBytes[1] = byte.Parse(parse[1]);
+            AssembledBytes[2] = (byte)(short.Parse(parse[2]) >> 8);
+            AssembledBytes[3] = byte.Parse(parse[2]);
 
             return AssembledBytes;
         }
@@ -42,11 +39,12 @@ namespace SharedLibrary.Layouts
         {
             string returnString = Dictionaries.TokenToString[Token];
 
-            for (int i = 1; i < input.Length; i++)
-            {
-                returnString += " R";
-                returnString += input[i];
-            }
+            returnString += " R";
+            returnString += input[1];
+
+            returnString += " 0x";
+            returnString += input[2];
+            returnString += input[3];
 
             return returnString;
         }

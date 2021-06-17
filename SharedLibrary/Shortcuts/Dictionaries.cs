@@ -29,16 +29,6 @@ namespace SharedLibrary.Shortcuts
 
         };
 
-        //public static Dictionary<string, Type> GetConversionTypeForRegex = new Dictionary<string, Type>()
-        //{
-        //    [RegexShortcuts.register] = typeof(byte),
-        //    [RegexShortcuts.memoryAddress] = typeof(short), 
-        ////    [RegexShortcuts.] = 
-        ////    [RegexShortcuts.] = 
-        ////    [RegexShortcuts.] = 
-        ////    [RegexShortcuts.] = 
-        ////    [RegexShortcuts.] = 
-        ////    [RegexShortcuts.] = 
-        //};
+        public static Dictionary<Tokens, string> TokenToString = new Dictionary<Tokens, string>();
     }
 }

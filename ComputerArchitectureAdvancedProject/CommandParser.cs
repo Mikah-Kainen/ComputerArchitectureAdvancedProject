@@ -26,36 +26,15 @@ namespace ComputerArchitectureAdvancedProject
             //ADD + (R\d +) +(R\d +) +(R\d +) https://regexr.com/
             //^(?i)(ADD) +(R\d+) +(R\d+) +(R\d+) https://regex101.com/
 
-            //Type currentType = typeof(ILayout);
-
-            //Type[] allTypes = Assembly.GetAssembly(currentType).GetTypes();
-            //Type[] allLayoutTypes = allTypes.Where(x => x.IsSubclassOf(currentType)).ToArray();
-
-            ////BaseInstruction[] allInstructions = allInstructionTypes.Select(x => (BaseInstruction)Activator.CreateInstance(x)).ToArray();
-
-
-            //getToken = new Dictionary<string, Tokens>();
-            //GotoTracker = new Dictionary<string, short>();
-            //ParseCommand = new Dictionary<Tokens, Func<string, byte[]>>();
-
             GotoTracker = new Dictionary<string, short>();
             getToken = new Dictionary<string, Tokens>();
-            foreach(int Op in Enum.GetValues(typeof(Tokens)))
+            foreach(byte Op in Enum.GetValues(typeof(Tokens)))
             {
-                getToken.Add(((Tokens)Op).ToString(), (Tokens)Op);
+                string temp = ((Tokens)Op).ToString();
+                getToken.Add(temp, (Tokens)Op);
+                Dictionaries.TokenToString.Add((Tokens)Op, temp);
             }
-
-
-
-            //foreach (Type type in allLayoutTypes)
-            //{
-            //    Tokens currentToken = Dictionaries.GetTokenFromType[type];
-            //    ParseCommand.Add(currentToken, (input) =>
-            //    {
-            //        var temp = (ILayout)Activator.CreateInstance(type);
-            //        return temp.Parse(input);
-            //    });
-            //}
+             
         }
 
         public string[] SplitCommands(string input)
@@ -84,10 +63,25 @@ namespace ComputerArchitectureAdvancedProject
             return tempList.ToArray();
         }
 
+        public string[] Parse(byte[][] commands)
+        {
+            List<string> tempList = new List<string>();
+            foreach (byte[] command in commands)
+            {
+                tempList.Add(Parse(command).ToString());
+            }
+            return tempList.ToArray();
+        }
+
         public byte[] Parse(string command)
         {
             Tokens commandToken = GetToken(command);
-            //ILayout commandLayout = Dictionaries.GetLayoutFromToken[commandToken];
+            return Dictionaries.GetLayoutFromToken[commandToken].Parse(command);
+        }
+
+        public string Parse(byte[] command)
+        {
+            Tokens commandToken = (Tokens)command[0];
             return Dictionaries.GetLayoutFromToken[commandToken].Parse(command);
         }
 

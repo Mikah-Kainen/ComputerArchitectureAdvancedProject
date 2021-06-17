@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SharedLibrary.Shortcuts
 {
-    public enum Tokens
+    public enum Tokens: byte
     {
         NOP = 0,
 
@@ -15,8 +15,8 @@ namespace SharedLibrary.Shortcuts
         MOD = 0x5,
         EQ = 0x6,
 
-        LABEL = 0x101,
-        COMMENT = 0x102,
+        LABEL = 0x51,
+        COMMENT = 0x52,
 
         GOTO = 0x10,
         GOTR = 0x11,
@@ -26,7 +26,7 @@ namespace SharedLibrary.Shortcuts
         LOAD = 0x22,
         STR = 0x23,
 
-        EMPTY = 0x103,
+        EMPTY = 0x53,
     }
 
     //    ["nop"] = 0x00,
