@@ -31,5 +31,6 @@ namespace SharedLibrary.Shortcuts
         public static Dictionary<string, byte> StringToOpDebug = new Dictionary<string, byte>();
 
         public static Dictionary<string, ushort> GotoTracker = new Dictionary<string, ushort>();
+
     }
 }

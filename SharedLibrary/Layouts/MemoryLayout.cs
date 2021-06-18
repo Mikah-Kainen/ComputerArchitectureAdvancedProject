@@ -29,8 +29,9 @@ namespace SharedLibrary.Layouts
             }
 
             AssembledBytes[1] = byte.Parse(parse[1]);
-            AssembledBytes[2] = (byte)(short.Parse(parse[2]) >> 8);
-            AssembledBytes[3] = byte.Parse(parse[2]);
+            ushort temp = ushort.Parse(parse[2], System.Globalization.NumberStyles.HexNumber);
+            AssembledBytes[2] = (byte)(temp >> 8);
+            AssembledBytes[3] = (byte)temp;
 
             return AssembledBytes;
         }

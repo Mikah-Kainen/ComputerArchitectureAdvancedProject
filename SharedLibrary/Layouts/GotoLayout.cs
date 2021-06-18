@@ -49,7 +49,7 @@ namespace SharedLibrary.Layouts
         {
             string returnString = Dictionaries.OpToString[OpByte];
 
-            HelperFunctions.ConvertMemoryLocationToHex(ref input, 1);
+            //HelperFunctions.ConvertMemoryLocationToHex(ref input, 1);
 
             returnString += HelperFunctions.DisassembleMemoryLocation(input, 1);
 

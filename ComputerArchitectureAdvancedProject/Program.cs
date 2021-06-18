@@ -76,7 +76,7 @@ namespace ComputerArchitectureAdvancedProject
 
         static void Main(string[] args)
         {
-
+            //Emulator emulator = new Emulator(new byte[0]);
             InitializeCommands();
 
 
@@ -94,7 +94,7 @@ namespace ComputerArchitectureAdvancedProject
                 "GOTO LABEL:",
                 "LABEL:",
                 "THISISALSOALABEL:",
-                "GOTO 0x0100",
+                //"GOTO 0x0100",
             };
 
             byte[][] expected =
@@ -107,8 +107,8 @@ namespace ComputerArchitectureAdvancedProject
                 new byte[4]{ 6, 1, 1, 1},
                 new byte[4]{ 1, 2, 3, 4},
                 new byte[4]{ 1, 4, 3, 2},
-                new byte[4]{ 0x10, 00, 0x14, 0xff},
-                new byte[4]{ 0x10, 01, 00, 0xff},
+                new byte[4]{ 0x10, 0x00, 0x14, 0xff},
+                //new byte[4]{ 0x10, 01, 00, 0xff},
             };
 
             CommandParser Parser = new CommandParser();
@@ -141,7 +141,7 @@ namespace ComputerArchitectureAdvancedProject
                 "ADD R2 R3 R4",
                 "ADD R4 R3 R2",
                 "GOTO 0x0014",
-                "GOTO 0x0100"
+                //"GOTO 0x0100"
             };
             //Dont forget that if 01 00 = 10 < 100
 

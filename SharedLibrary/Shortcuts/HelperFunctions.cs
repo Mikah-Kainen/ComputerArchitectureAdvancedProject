@@ -13,8 +13,8 @@ namespace SharedLibrary.Shortcuts
             string temp;
             for (int i = targetIndex; i < targetIndex + 2; i++)
             {
-                //temp = Convert.ToString(input[i], 16);
-                temp = input[i].ToString();
+                temp = Convert.ToString(input[i], 16);
+                //temp = input[i].ToString();
                 if (temp.Length < 2)
                 {
                     returnString += 0;
@@ -27,8 +27,8 @@ namespace SharedLibrary.Shortcuts
 
         public static void ConvertMemoryLocationToHex(ref byte[] input, byte targetIndex)
         {
-            string temp = Convert.ToString(input[1], 16);
-            temp += Convert.ToString(input[2], 16);
+            string temp = Convert.ToString(input[targetIndex], 16);
+            temp += Convert.ToString(input[targetIndex + 1], 16);
             input[1] = (byte)(short.Parse(temp) >> 8);
             input[2] = (byte)(short.Parse(temp));
         }
