@@ -17,7 +17,7 @@ namespace SharedLibrary.Layouts
             OpByte = opByte;
 
             string regexPattern = RegexShortcuts.Start + RegexShortcuts.IgnoreCase;
-            regexPattern += opByte.ToString();
+            regexPattern += Dictionaries.OpToString[opByte];
             foreach(string captureGroup in captureGroups)
             {
                 regexPattern += RegexShortcuts.Space;

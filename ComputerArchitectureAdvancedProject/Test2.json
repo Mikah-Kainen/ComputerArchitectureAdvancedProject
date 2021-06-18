@@ -1,0 +1,37 @@
+[
+  {
+    "OpName": "ADD",
+    "LayoutName": "MathLayout",
+    "OpCode": "01"
+  },
+
+  {
+    "OpName": "EQ",
+    "LayoutName": "MathLayout",
+    "OpCode": "06"
+  },
+
+  {
+    "OpName": "SET",
+    "LayoutName": "MemoryLayout",
+    "OpCode": "21"
+  },
+
+  {
+    "OpName": "LOAD",
+    "LayoutName": "MemoryLayout",
+    "OpCode": "22"
+  },
+
+  {
+    "OpName": "STR",
+    "LayoutName": "MemoryLayout",
+    "OpCode": "23"
+  },
+
+  {
+    "OpName": "GOTO",
+    "LayoutName": "GotoLayout",
+    "OpCode": "10"
+  }
+]

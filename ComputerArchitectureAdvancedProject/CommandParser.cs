@@ -35,10 +35,11 @@ namespace ComputerArchitectureAdvancedProject
 
         public void FirstPass(string[] commands)
         {
-            Regex labelRegex = new Regex("(.*:)");
+            Regex labelRegex = new Regex(RegexShortcuts.Label);
             foreach (string command in commands)
             {
                 string temp = labelRegex.Match(command).Value;
+               // if()
             }
         }
 

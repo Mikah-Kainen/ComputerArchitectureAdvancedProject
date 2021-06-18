@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharedLibrary.Layouts
 {
-    public class GotoL : PatternBasedLayout, ILayout
+    public class GotoLayout : PatternBasedLayout, ILayout
     {
 
         public static string[] CaptureGroups = new string[]
@@ -13,7 +13,7 @@ namespace SharedLibrary.Layouts
             RegexShortcuts.Label,
         };
 
-        public GotoL(byte opByte)
+        public GotoLayout(byte opByte)
             : base(opByte, CaptureGroups)
         {
 
@@ -28,11 +28,18 @@ namespace SharedLibrary.Layouts
                 throw new SystemException("IDK WHAT THIS COMMAND IS");
             }
 
-            for (int i = 1; i < AssembledBytes.Length; i++)
+            if(parse[1][parse[1].Length - 1] == ':')
             {
-                AssembledBytes[i] = byte.Parse(parse[i]);
-
+                AssembledBytes[1] = 00;
+                AssembledBytes[2] = 00;
             }
+            else
+            {
+                ushort temp = ushort.Parse(parse[1]);
+                AssembledBytes[1] = (byte)(temp >> 8);
+                AssembledBytes[2] = (byte)temp;
+            }
+            AssembledBytes[3] = 0xff;
 
             return AssembledBytes;
         }
@@ -41,11 +48,9 @@ namespace SharedLibrary.Layouts
         {
             string returnString = Dictionaries.OpToString[OpByte];
 
-            for (int i = 1; i < input.Length; i++)
-            {
-                returnString += " R";
-                returnString += input[i];
-            }
+            returnString += " 0x";
+            returnString += input[1].ToString();
+            returnString += input[2].ToString();
 
             return returnString;
         }
