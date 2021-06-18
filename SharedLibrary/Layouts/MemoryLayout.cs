@@ -37,7 +37,7 @@ namespace SharedLibrary.Layouts
 
         public string Parse(byte[] input)
         {
-            string returnString = Dictionaries.OpToString[Token];
+            string returnString = Dictionaries.OpToString[OpByte];
 
             returnString += " R";
             returnString += input[1];

@@ -10,14 +10,14 @@ namespace SharedLibrary.Layouts
     {
         public Regex Pattern;
         public byte[] AssembledBytes;
-        public byte Token;
+        public byte OpByte;
 
-        public PatternBasedLayout(byte token, string[] captureGroups)
+        public PatternBasedLayout(byte opByte, string[] captureGroups)
         {
-            Token = token;
+            OpByte = opByte;
 
             string regexPattern = RegexShortcuts.Start + RegexShortcuts.IgnoreCase;
-            regexPattern += token.ToString();
+            regexPattern += opByte.ToString();
             foreach(string captureGroup in captureGroups)
             {
                 regexPattern += RegexShortcuts.Space;
@@ -28,7 +28,7 @@ namespace SharedLibrary.Layouts
 
             Pattern = new Regex(regexPattern);
             AssembledBytes = new byte[4];
-            AssembledBytes[0] = (byte)token;
+            AssembledBytes[0] = (byte)opByte;
         }
     }
 }

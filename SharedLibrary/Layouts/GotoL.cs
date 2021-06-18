@@ -1,25 +1,23 @@
-﻿using SharedLibrary.Layouts;
-using SharedLibrary.Shortcuts;
+﻿using SharedLibrary.Shortcuts;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace SharedLibrary.Layouts
 {
-    public class MathLayout : PatternBasedLayout, ILayout
+    public class GotoL : PatternBasedLayout, ILayout
     {
+
         public static string[] CaptureGroups = new string[]
         {
-            RegexShortcuts.Register,
-            RegexShortcuts.Register,
-            RegexShortcuts.Register,
+            RegexShortcuts.Label,
         };
-        public MathLayout(byte opByte)
+
+        public GotoL(byte opByte)
             : base(opByte, CaptureGroups)
         {
 
-              Dictionaries.GetLayoutFromToken.Add(opByte, this);
+            Dictionaries.GetLayoutFromToken.Add(opByte, this);
         }
 
         public byte[] Parse(string input)
@@ -33,6 +31,7 @@ namespace SharedLibrary.Layouts
             for (int i = 1; i < AssembledBytes.Length; i++)
             {
                 AssembledBytes[i] = byte.Parse(parse[i]);
+
             }
 
             return AssembledBytes;
