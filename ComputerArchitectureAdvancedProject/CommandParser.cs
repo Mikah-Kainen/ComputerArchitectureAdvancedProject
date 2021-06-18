@@ -12,18 +12,16 @@ namespace ComputerArchitectureAdvancedProject
 
     public class CommandParser
     {
-
-
-        public Dictionary<string, short> GotoTracker;
-
-        short currentLocation;
+        ushort startLocation;
+        ushort currentLocation;
       
         public CommandParser()
         {
             //ADD + (R\d +) +(R\d +) +(R\d +) https://regexr.com/
             //^(?i)(ADD) +(R\d+) +(R\d+) +(R\d+) https://regex101.com/
 
-            GotoTracker = new Dictionary<string, short>();
+            startLocation = 0x000;
+            currentLocation = 4;
         }
 
         public string[] SplitCommands(string input)
@@ -39,16 +37,28 @@ namespace ComputerArchitectureAdvancedProject
             foreach (string command in commands)
             {
                 string temp = labelRegex.Match(command).Value;
-               // if()
+                if (temp != "")
+                {
+                    Dictionaries.GotoTracker.Add(temp, currentLocation);
+                }
+                else
+                {
+                    currentLocation += 4;
+                }
             }
         }
 
         public byte[][] Parse(string[] commands)
         {
+            FirstPass(commands);
+
             List<byte[]> tempList = new List<byte[]>();
             foreach(string command in commands)
             {
-                tempList.Add(Parse(command).ToArray());
+                if (Dictionaries.GetLayoutFromOpByte.ContainsKey(GetOpByte(command)))
+                {
+                    tempList.Add(Parse(command).ToArray());
+                }
             }
             return tempList.ToArray();
         }
@@ -65,42 +75,28 @@ namespace ComputerArchitectureAdvancedProject
 
         public byte[] Parse(string command)
         {
-            byte commandToken = GetToken(command);
-            return Dictionaries.GetLayoutFromToken[commandToken].Parse(command);
+            byte commandToken = GetOpByte(command);
+            return Dictionaries.GetLayoutFromOpByte[commandToken].Parse(command);
         }
 
         public string Parse(byte[] command)
         {
-            byte commandToken = (byte)command[0];
-            return Dictionaries.GetLayoutFromToken[commandToken].Parse(command);
+            byte commandToken = command[0];
+            return Dictionaries.GetLayoutFromOpByte[commandToken].Parse(command);
         }
 
-        public byte GetToken(string input)
+        public byte GetOpByte(string input)
         {
-            if (Dictionaries.StringToOp.ContainsKey(input))
+            foreach (var kvp in Dictionaries.OpToString)
             {
-                return Dictionaries.StringToOp[input];
-            }
-
-            List<Regex> superTemp = new List<Regex>();
-            foreach (var kvp in Dictionaries.StringToOp)
-            {
-                Regex current = new Regex(@"^( *(?i)(" + kvp.Key + @"))");
-                superTemp.Add(current);
+                Regex current = new Regex(@"^( *(?i)(" + kvp.Value + @"))");
                 if (current.IsMatch(input))
                 {
-                    return kvp.Value;
+                    return kvp.Key;
                 }
             }
 
-            Regex isLabel = new Regex(@":$");
-            if (isLabel.IsMatch(input))
-            {
-                GotoTracker.Add(input, currentLocation);
-                return Dictionaries.StringToOp["LABEL"];
-            }
-
-            return Dictionaries.StringToOp["EMPTY"];
+            return 0;
         }
 
     }

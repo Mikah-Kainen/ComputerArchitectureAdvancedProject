@@ -19,7 +19,7 @@ namespace SharedLibrary.Layouts
             : base(opByte, CaptureGroups)
         {
 
-              Dictionaries.GetLayoutFromToken.Add(opByte, this);
+              Dictionaries.GetLayoutFromOpByte.Add(opByte, this);
         }
 
         public byte[] Parse(string input)

@@ -14,7 +14,7 @@ namespace SharedLibrary.Shortcuts
         public static string Register = @"R([0-2][0-9]|3[0-1]|[0-9])";
         public static string HexValue = @"(?:0x)?([0-F]{0-2})";
         public static string Padding = @"(?:0x)?f{0,4}";
-        public static string MemoryAddress = @"(?:0x)?(\d{0,4})";
+        public static string MemoryAddress = @"(?:0x)?(\d{1,4})";
         public static string Label = @"(.+:+)";
     }
 

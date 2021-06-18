@@ -55,7 +55,7 @@ namespace ComputerArchitectureAdvancedProject
                     {
                         var @byte = byte.Parse(returnedModel.OpCode, System.Globalization.NumberStyles.HexNumber);
 
-                        Dictionaries.StringToOp.Add($"{returnedModel.OpName}", @byte);
+                        //Dictionaries.StringToOpDebug.Add($"{returnedModel.OpName}", @byte);
                         Dictionaries.OpToString.Add(@byte, $"{returnedModel.OpName}");
 
                         Activator.CreateInstance(type, @byte);
@@ -87,15 +87,19 @@ namespace ComputerArchitectureAdvancedProject
                 //"MUlT R12 R0 R21",
                 //"div R23 R31 R21",
                 //"MOD   R23   R12 R30 ; asdlkfj",
+                "FIRSTLABEL:",
                 "eq R1 R1 R1",
                 "Add R2 R3 R4",
                 "Add R4 R3 R2",
                 "GOTO LABEL:",
+                "LABEL:",
+                "THISISALSOALABEL:",
+                "GOTO 0x0100",
             };
 
             byte[][] expected =
             {
-                new byte[4]{ 0x21, 1, 00, 23},
+                new byte[4]{ 0x21, 1, 00, 0x23},
                 //new byte[4]{ 2, 23, 12, 20},
                 //new byte[4]{ 3, 12, 0, 21},
                 //new byte[4]{ 4, 23, 31, 21},
@@ -103,7 +107,8 @@ namespace ComputerArchitectureAdvancedProject
                 new byte[4]{ 6, 1, 1, 1},
                 new byte[4]{ 1, 2, 3, 4},
                 new byte[4]{ 1, 4, 3, 2},
-                new byte[4]{ 0x10, 00, 00, 0xff},
+                new byte[4]{ 0x10, 00, 0x14, 0xff},
+                new byte[4]{ 0x10, 01, 00, 0xff},
             };
 
             CommandParser Parser = new CommandParser();
@@ -127,7 +132,7 @@ namespace ComputerArchitectureAdvancedProject
 
             string[] expected2 =
             {
-                "SET R1 0x023",
+                "SET R1 0x0023",
                 //"SUB R23 R12 R20",
                 //"MULT R12 R0 R21",
                 //"DIV R23 R31 R21",
@@ -135,8 +140,10 @@ namespace ComputerArchitectureAdvancedProject
                 "EQ R1 R1 R1",
                 "ADD R2 R3 R4",
                 "ADD R4 R3 R2",
-                "GOTO 0x00",
+                "GOTO 0x0014",
+                "GOTO 0x0100"
             };
+            //Dont forget that if 01 00 = 10 < 100
 
             for(int i = 0; i < result2.Length; i ++)
             {

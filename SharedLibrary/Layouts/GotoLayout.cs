@@ -10,32 +10,33 @@ namespace SharedLibrary.Layouts
 
         public static string[] CaptureGroups = new string[]
         {
-            RegexShortcuts.Label,
+            $"{RegexShortcuts.Label}|{RegexShortcuts.MemoryAddress}",
         };
 
         public GotoLayout(byte opByte)
             : base(opByte, CaptureGroups)
         {
 
-            Dictionaries.GetLayoutFromToken.Add(opByte, this);
+            Dictionaries.GetLayoutFromOpByte.Add(opByte, this);
         }
 
         public byte[] Parse(string input)
         {
-            string[] parse = Pattern.Split(input);
-            if (parse.Length != CaptureGroups.Length + 2)
-            {
-                throw new SystemException("IDK WHAT THIS COMMAND IS");
-            }
+            var parse = Pattern.Match(input);
+            //if (parse.Groups.Count != CaptureGroups.Length + 1)
+            //{
+            //    throw new SystemException("IDK WHAT THIS COMMAND IS");
+            //}
 
-            if(parse[1][parse[1].Length - 1] == ':')
+            if(parse.Groups[1].Length > 0)
             {
-                AssembledBytes[1] = 00;
-                AssembledBytes[2] = 00;
+                ushort loc = Dictionaries.GotoTracker[parse.Groups[1].Value];
+                AssembledBytes[1] = (byte)(loc >> 8);
+                AssembledBytes[2] = (byte)loc;
             }
             else
             {
-                ushort temp = ushort.Parse(parse[1]);
+                ushort temp = ushort.Parse(parse.Groups[2].Value);
                 AssembledBytes[1] = (byte)(temp >> 8);
                 AssembledBytes[2] = (byte)temp;
             }
@@ -48,9 +49,9 @@ namespace SharedLibrary.Layouts
         {
             string returnString = Dictionaries.OpToString[OpByte];
 
-            returnString += " 0x";
-            returnString += input[1].ToString();
-            returnString += input[2].ToString();
+            HelperFunctions.ConvertMemoryLocationToHex(ref input, 1);
+
+            returnString += HelperFunctions.DisassembleMemoryLocation(input, 1);
 
             return returnString;
         }

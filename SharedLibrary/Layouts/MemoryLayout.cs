@@ -17,7 +17,7 @@ namespace SharedLibrary.Layouts
         public MemoryLayout(byte token)
             : base(token, CaptureGroups)
         {
-            Dictionaries.GetLayoutFromToken.Add(token, this);
+            Dictionaries.GetLayoutFromOpByte.Add(token, this);
         }
 
         public byte[] Parse(string input)
@@ -42,9 +42,7 @@ namespace SharedLibrary.Layouts
             returnString += " R";
             returnString += input[1];
 
-            returnString += " 0x";
-            returnString += input[2];
-            returnString += input[3];
+            returnString += HelperFunctions.DisassembleMemoryLocation(input, 2);
 
             return returnString;
         }
