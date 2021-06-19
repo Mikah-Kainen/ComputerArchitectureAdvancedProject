@@ -21,7 +21,7 @@ namespace ComputerArchitectureAdvancedProject
             //^(?i)(ADD) +(R\d+) +(R\d+) +(R\d+) https://regex101.com/
 
             startLocation = 0x000;
-            currentLocation = 4;
+            currentLocation = 0;
         }
 
         public string[] SplitCommands(string input)
@@ -46,6 +46,24 @@ namespace ComputerArchitectureAdvancedProject
                     currentLocation += 4;
                 }
             }
+        }
+
+        public byte[] ParseA(string[] commands)
+        {
+            FirstPass(commands);
+
+            List<byte> tempList = new List<byte>();
+            foreach (string command in commands)
+            {
+                if (Dictionaries.GetLayoutFromOpByte.ContainsKey(GetOpByte(command)))
+                {
+                    foreach(byte part in Parse(command))
+                    {
+                        tempList.Add(part);
+                    }
+                }
+            }
+            return tempList.ToArray();
         }
 
         public byte[][] Parse(string[] commands)

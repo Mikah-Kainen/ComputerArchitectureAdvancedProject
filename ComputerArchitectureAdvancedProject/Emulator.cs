@@ -17,9 +17,11 @@ namespace ComputerArchitectureAdvancedProject
             //[0x05] = new Action<byte[]>(),
             [0x06] = new Action<byte[]>((inputs) => { Registers[inputs[1]] = Registers[inputs[2]] == Registers[inputs[3]] ? (ushort)1 : (ushort)0; }),
             [0x010] = new Action<byte[]>((inputs) => { Registers[IP] = (ushort)((inputs[1] << 8) + inputs[2]); }),
-            //[0x11] = new Action<byte[]>(),
+            [0x11] = new Action<byte[]>((inputs) => { if (Registers[inputs[3]] == 1) { Registers[IP] = (ushort)((inputs[1] << 8) + inputs[2]); } }),
             [0x20] = new Action<byte[]>((inputs) => { Registers[inputs[1]] = (ushort)((inputs[2] << 8) + inputs[3]); }),
             [0x21] = new Action<byte[]>((inputs) => { Registers[inputs[1]] = Registers[inputs[2]]; }),
+            //[0x22] = new Action<byte[]>()
+            [0x23] = new Action<byte[]>((inputs) => { RAM[(inputs[2] << 8) + inputs[3]] = (byte)(Registers[inputs[1]] >> 8); RAM[(inputs[2] << 8) + inputs[3] + 1] = (byte)Registers[inputs[1]]; }),
         };                     
 
         public const int INSTRUCTION_BYTES = 4;
@@ -39,18 +41,18 @@ namespace ComputerArchitectureAdvancedProject
 
         public Emulator(byte[] programBytes)
         {
-            programBytes = new byte[] { 
-                0x20, 0x01, 0x00, 0x01,
-                0x20, 0x02, 0x00, 0x02,
-                0x20, 0x03, 0x00, 0x03,
+            //programBytes = new byte[] { 
+            //    0x20, 0x01, 0x00, 0x01,
+            //    0x20, 0x02, 0x00, 0x02,
+            //    0x20, 0x03, 0x00, 0x03,
 
-                0x06, 0x04, 0x01, 0x01,
+            //    0x06, 0x04, 0x01, 0x01,
 
-                0x01, 0x01, 0x02, 0x03, 
-                0x01, 0x02, 0x02, 0x02, 
-                0x01, 0x03, 0x02, 0x02,
+            //    0x01, 0x01, 0x02, 0x03, 
+            //    0x01, 0x02, 0x02, 0x02, 
+            //    0x01, 0x03, 0x02, 0x02,
                 
-                0x10, 0x00, 0xC, 0xff};
+            //    0x10, 0x00, 0xC, 0xff};
 
 
             ushort stackSize = 10;

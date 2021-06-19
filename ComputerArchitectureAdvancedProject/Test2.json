@@ -12,6 +12,12 @@
   },
 
   {
+    "OpName": "SETI",
+    "LayoutName": "RegisterHexLayout",
+    "OpCode": "20"
+  },
+
+  {
     "OpName": "SET",
     "LayoutName": "MemoryLayout",
     "OpCode": "21"
@@ -34,5 +40,11 @@
     "LayoutName": "GotoLayout",
     "OpCode": "10"
   },
+
+  {
+    "OpName": "GOBR",
+    "LayoutName": "GOBRLayout",
+    "OpCode": "11"
+  }
 
 ]

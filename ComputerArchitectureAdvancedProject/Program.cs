@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ComputerArchitectureAdvancedProject
 {
-    class Program
+    public class Program
     {
         class Model
         {
@@ -76,84 +76,103 @@ namespace ComputerArchitectureAdvancedProject
 
         static void Main(string[] args)
         {
-            //Emulator emulator = new Emulator(new byte[0]);
+
             InitializeCommands();
 
 
-            string[] commands =
-            {
-                "SET R01 0x0023",
-                //"Sub R23 R12 R20 ;haha I will trick the compiler with comments",
-                //"MUlT R12 R0 R21",
-                //"div R23 R31 R21",
-                //"MOD   R23   R12 R30 ; asdlkfj",
-                "FIRSTLABEL:",
-                "eq R1 R1 R1",
-                "Add R2 R3 R4",
-                "Add R4 R3 R2",
-                "GOTO LABEL:",
-                "LABEL:",
-                "THISISALSOALABEL:",
-                //"GOTO 0x0100",
-            };
+            //string[] commands =
+            //{
+            //    "SET R01 0x0023",
+            //    //"Sub R23 R12 R20 ;haha I will trick the compiler with comments",
+            //    //"MUlT R12 R0 R21",
+            //    //"div R23 R31 R21",
+            //    //"MOD   R23   R12 R30 ; asdlkfj",
+            //    "FIRSTLABEL:",
+            //    "eq R1 R1 R1",
+            //    "Add R2 R3 R4",
+            //    "Add R4 R3 R2",
+            //    "GOTO LABEL:",
+            //    "LABEL:",
+            //    "THISISALSOALABEL:",
+            //    //"GOTO 0x0100",
+            //};
 
-            byte[][] expected =
-            {
-                new byte[4]{ 0x21, 1, 00, 0x23},
-                //new byte[4]{ 2, 23, 12, 20},
-                //new byte[4]{ 3, 12, 0, 21},
-                //new byte[4]{ 4, 23, 31, 21},
-                //new byte[4]{ 5, 23, 12, 30},
-                new byte[4]{ 6, 1, 1, 1},
-                new byte[4]{ 1, 2, 3, 4},
-                new byte[4]{ 1, 4, 3, 2},
-                new byte[4]{ 0x10, 0x00, 0x14, 0xff},
-                //new byte[4]{ 0x10, 01, 00, 0xff},
-            };
+            //byte[][] expected =
+            //{
+            //    new byte[4]{ 0x21, 1, 00, 0x23},
+            //    //new byte[4]{ 2, 23, 12, 20},
+            //    //new byte[4]{ 3, 12, 0, 21},
+            //    //new byte[4]{ 4, 23, 31, 21},
+            //    //new byte[4]{ 5, 23, 12, 30},
+            //    new byte[4]{ 6, 1, 1, 1},
+            //    new byte[4]{ 1, 2, 3, 4},
+            //    new byte[4]{ 1, 4, 3, 2},
+            //    new byte[4]{ 0x10, 0x00, 0x14, 0xff},
+            //    //new byte[4]{ 0x10, 01, 00, 0xff},
+            //};
+
+            //CommandParser Parser = new CommandParser();
+            //var result = Parser.Parse(commands);
+            //bool areEqual = true;
+
+            //for(int i = 0; i < result.Length; i ++)
+            //{
+            //    for(int x = 0; x < result[i].Length; x ++)
+            //    {
+            //        if(result[i][x] != expected[i][x])
+            //        {
+            //            areEqual = false;
+            //            break;
+            //        }
+            //    }
+            //}
+
+            //bool areEqual2 = true;
+            //var result2 = Parser.Parse(result);
+
+            //string[] expected2 =
+            //{
+            //    "SET R1 0x0023",
+            //    //"SUB R23 R12 R20",
+            //    //"MULT R12 R0 R21",
+            //    //"DIV R23 R31 R21",
+            //    //"MOD R23 R12 R30",
+            //    "EQ R1 R1 R1",
+            //    "ADD R2 R3 R4",
+            //    "ADD R4 R3 R2",
+            //    "GOTO 0x0014",
+            //    //"GOTO 0x0100"
+            //};
+            ////Dont forget that if 01 00 = 10 < 100
+
+            //for(int i = 0; i < result2.Length; i ++)
+            //{
+            //    if(result2[i] != expected2[i])
+            //    {
+            //        areEqual2 = false;
+            //    }
+            //}
 
             CommandParser Parser = new CommandParser();
-            var result = Parser.Parse(commands);
-            bool areEqual = true;
 
-            for(int i = 0; i < result.Length; i ++)
-            {
-                for(int x = 0; x < result[i].Length; x ++)
-                {
-                    if(result[i][x] != expected[i][x])
-                    {
-                        areEqual = false;
-                        break;
-                    }
-                }
-            }
+            string[] commands = { 
+            "SETI R1 02",
+            "SETI R2 02",
+            "SETI R3 03",
+            "SETI R4 05",
+            "PLACE:",
 
-            bool areEqual2 = true;
-            var result2 = Parser.Parse(result);
+            "ADD R1 R2 R3",
+            "ADD R2 R2 R2",
+            "ADD R3 R2 R2",
 
-            string[] expected2 =
-            {
-                "SET R1 0x0023",
-                //"SUB R23 R12 R20",
-                //"MULT R12 R0 R21",
-                //"DIV R23 R31 R21",
-                //"MOD R23 R12 R30",
-                "EQ R1 R1 R1",
-                "ADD R2 R3 R4",
-                "ADD R4 R3 R2",
-                "GOTO 0x0014",
-                //"GOTO 0x0100"
+            "EQ R5 R1 R4",
+            "GOBR PLACE: R5",
             };
-            //Dont forget that if 01 00 = 10 < 100
 
-            for(int i = 0; i < result2.Length; i ++)
-            {
-                if(result2[i] != expected2[i])
-                {
-                    areEqual2 = false;
-                }
-            }
+            byte[] Commands = Parser.ParseA(commands);
 
-
+            Emulator emulator = new Emulator(Commands); 
         }
    
     }
